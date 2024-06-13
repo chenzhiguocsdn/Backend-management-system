@@ -25,7 +25,7 @@ const items = MenuConfig.map((icon) => {
 function CommonAside({isCollapse}) {
   return (
     <Sider trigger={null} collapsible collapsed={isCollapse}>
-      <h3 className="app-name">通用后台管理系统</h3>
+      <h3 className="app-name">{isCollapse ? '后台' : '通用后台管理系统'}</h3>
       <Menu
         theme="dark"
         mode="inline"
