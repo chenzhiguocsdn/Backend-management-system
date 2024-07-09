@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import * as Icon from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import MenuConfig from "../../config/index";
+import { useNavigate  } from "react-router-dom";
 const { Sider } = Layout;
 // 动态获取icon
 const itemToElement = (name) => React.createElement(Icon[name]);
@@ -16,21 +17,30 @@ const items = MenuConfig.map((icon) => {
   };
   if (icon.children) {
     child.children = icon.children.map((item) => {
-      return { key: item.path,icon:itemToElement(item.icon), label: item.label,  };
+      return {
+        key: item.path,
+        icon: itemToElement(item.icon),
+        label: item.label,
+      };
     });
   }
-  return child
+  return child;
 });
 
-function CommonAside({isCollapse}) {
+function CommonAside({ isCollapse }) {
+  const navigate = useNavigate();
+  const onClick = (e) => {
+    navigate(e.key);
+  };
   return (
     <Sider trigger={null} collapsible collapsed={isCollapse}>
-      <h3 className="app-name">{isCollapse ? '后台' : '通用后台管理系统'}</h3>
+      <h3 className="app-name">{isCollapse ? "后台" : "通用后台管理系统"}</h3>
       <Menu
+        onClick={onClick}
         theme="dark"
         mode="inline"
         defaultSelectedKeys={["1"]}
-        items= {items}
+        items={items}
       />
     </Sider>
   );
