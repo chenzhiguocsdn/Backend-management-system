@@ -4,37 +4,46 @@ import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import "./index.css";
 import { useDispatch } from "react-redux";
 import { collapseMenu } from "../../store/reducers/tab";
+import { useNavigate } from "react-router-dom";
 
 const { Header } = Layout;
 
-const items = [
-  {
-    key: "1",
-    label: (
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://www.antgroup.com"
-      >
-        个人中心
-      </a>
-    ),
-  },
-  {
-    key: "2",
-    label: (
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://www.aliyun.com"
-      >
-        退出
-      </a>
-    ),
-  },
-];
 
 function CommonHeader({isCollapse}) {
+  const navigate = useNavigate()
+  const outDr =  () => {
+    navigate('/login')
+    localStorage.removeItem('token')
+    console.log('退出登入')
+  }
+  const items = [
+    {
+      key: "1",
+      label: (
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          // href="https://www.antgroup.com"
+        >
+          个人中心
+        </a>
+      ),
+    },
+    {
+      key: "2",
+      label: (
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          // href="https://www.aliyun.com"
+          onClick={outDr}
+        >
+          退出
+        </a>
+      ),
+    },
+  ];
+  
   const {
     token: { colorBgContainer },
   } = theme.useToken();

@@ -2,7 +2,7 @@ import axios from "axios";
 
 // 创建axios实例
 const service = axios.create({
-  baseURL: "https://mock.presstime.cn/mock/666ac12ca76326606e5e092a", // 根据实际情况修改为你的API基础URL
+  baseURL: "http://127.0.0.1:4523/m1/4830109-4485096-default/mock/666ac12ca76326606e5e092a", // 根据实际情况修改为你的API基础URL
   timeout: 5000, // 请求超时时间
 });
 

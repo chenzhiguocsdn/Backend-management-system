@@ -6,6 +6,8 @@ import Mall from "../pages/mall";
 import User from "../pages/user";
 import PageOne from "../pages/other/pageOne";
 import PageTwo from "../pages/other/pageTwo";
+import Login from "../pages/login";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -42,5 +44,9 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: '/login',
+    element: <Login/>
+  }
 ]);
 export default router;

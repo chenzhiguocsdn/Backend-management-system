@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import * as Icon from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import MenuConfig from "../../config/index";
-import { useNavigate  } from "react-router-dom";
+import { useLocation, useNavigate  } from "react-router-dom";
 const { Sider } = Layout;
 // 动态获取icon
 const itemToElement = (name) => React.createElement(Icon[name]);
@@ -29,6 +29,8 @@ const items = MenuConfig.map((icon) => {
 
 function CommonAside({ isCollapse }) {
   const navigate = useNavigate();
+  const location = useLocation()
+  const defalutkeys = location.pathname
   const onClick = (e) => {
     navigate(e.key);
   };
@@ -39,7 +41,7 @@ function CommonAside({ isCollapse }) {
         onClick={onClick}
         theme="dark"
         mode="inline"
-        defaultSelectedKeys={["1"]}
+        defaultSelectedKeys={[defalutkeys]}
         items={items}
       />
     </Sider>
