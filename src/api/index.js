@@ -54,3 +54,11 @@ export const confirmLogin = (data) => {
   })
 }
 
+// 注册
+export const confirmregister = (data) => {
+  return http.request({
+    url:"http://localhost:8080/register",
+    method: "post",
+    data
+  })
+}

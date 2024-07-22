@@ -43,7 +43,7 @@ app.get("/users", async (req, res) => {
     res.status(500).send(err.message);
   }
 });
-
+// 增加用户
 app.post("/users/create", async (req, res) => {
   try {
     const { name, age, gender, birthdate, address } = req.body;
@@ -132,7 +132,7 @@ app.post("/login", async (req, res) => {
 
   try {
     // 执行查询以获取用户信息
-    const [rows] = await pool.query("SELECT * FROM users WHERE username = ?", [
+    const [rows] = await pool.query("SELECT * FROM people WHERE username = ?", [
       username,
     ]);
 
@@ -143,8 +143,9 @@ app.post("/login", async (req, res) => {
     const user = rows[0];
 
     // 验证密码 这里使用简单比较法，因为现在还没有注册接口
-    const isMatch = password === user.password ? true : false;
-    // const isMatch = await bcrypt.compare(password, user.password);
+    // const isMatch = password === user.password ? true : false;
+    // 哈希验证
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(401).send({ success: false, message: "密码错误" });
     }
@@ -168,6 +169,77 @@ app.post("/login", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send({ success: false, message: "服务器错误" });
+  }
+});
+// // 注册接口
+// app.post('/register', async (req, res) => {
+//   const { username, password } = req.body;
+
+//   if (!username || !password) {
+//     return res.status(400).json({ error: 'Username and password are required' });
+//   }
+
+//   try {
+//     const [rows, fields] = await pool.query(
+//       'INSERT INTO users (username, password) VALUES (?, ?)',
+//       [username, password]
+//     );
+
+//     if (rows.affectedRows === 1) {
+//       res.status(201).json({ message: 'User registered successfully' });
+//     } else {
+//       res.status(400).json({ error: 'Failed to register user' });
+//     }
+
+//   } catch (error) {
+//     console.error('Error registering user:', error);
+//     res.status(500).json({ error: 'Internal server error' });
+//   }
+// });
+// 注册接口
+app.post("/register", async (req, res) => {
+  const { username, password,name, age, gender, birthdate, address } = req.body;
+
+  if (!username || !password) {
+    return res
+      .status(400)
+      .json({ error: "Username and password are required" });
+  }
+
+  // 尝试获取数据库连接
+  try {
+    // 检查用户名是否已存在
+    const [rows] = await pool.query(
+      "SELECT * FROM people WHERE username = ?",
+      [username]
+    );
+
+    if (rows.length > 0) {
+      return res.status(400).json({ error: "Username already exists" });
+    }
+
+    // 使用bcrypt生成密码的哈希值
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+
+    
+    // 插入新用户记录到数据库
+    const [result] = await pool.query(
+      "INSERT INTO people (username, password,name, age, gender, birthdate, address) VALUES (?, ?,?, ?, ?, ?, ?)",
+      [username, hashedPassword,name, age, gender, birthdate, address]
+    );
+
+    if (result.affectedRows === 1) {
+      res.status(201).json({ message: "User registered successfully" });
+    } else {
+      res.status(500).json({ error: "Failed to register user" });
+    }
+
+    // 关闭数据库连接（在生产环境中，你可能希望使用连接池来管理连接）
+  } catch (error) {
+    console.error("Error registering user:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 

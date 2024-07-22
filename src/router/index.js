@@ -7,6 +7,7 @@ import User from "../pages/user";
 import PageOne from "../pages/other/pageOne";
 import PageTwo from "../pages/other/pageTwo";
 import Login from "../pages/login";
+import Register from "../pages/register";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
   {
     path: '/login',
     element: <Login/>
+  },
+  {
+    path: '/register',
+    element: <Register/>
   }
 ]);
 export default router;
